@@ -2,6 +2,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import UsersList from "./screens/UserList";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
+import ProductsView from "./screens/ProductsView";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 const Tab = createBottomTabNavigator();
@@ -10,8 +11,7 @@ const Stack = createNativeStackNavigator();
 function MainTab() {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="UsersList" component={UsersList} />
-      <Tab.Screen name="UsersList" component={UsersList} />
+      <Tab.Screen name="Productos" component={ProductsView} />
     </Tab.Navigator>
   );
 }
