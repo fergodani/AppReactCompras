@@ -18,7 +18,7 @@ const CreateUserScreen = (props) => {
       const ref = collection(firestore, "users");
       try {
         addDoc(ref, state);
-        props.navigation.navigate("UsersList")
+        props.navigation.navigate("UserList")
       } catch (err) {
         console.error(err);
       }
