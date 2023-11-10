@@ -1,7 +1,22 @@
-import { createAppContainer } from "react-navigation";
-import { createStackNavigator } from "react-navigation-stack";
+import { NavigationContainer } from "@react-navigation/native";
+import UsersList from "./screens/UserList";
 import CreateUserScreen from "./screens/CreateUserScreen";
-import UsersList from "./screens/UserList"
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+const Tab = createBottomTabNavigator();
 
-export default createAppContainer(
-  createStackNavigator( {CreateUserScreen, UsersList},{initialRouteName: "CreateUserScreen"}));
+function MyStack() {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name="CreateUserScreen" component={CreateUserScreen} />
+      <Tab.Screen name="UsersList" component={UsersList} />
+    </Tab.Navigator>
+  );
+}
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <MyStack />
+    </NavigationContainer>
+  );
+}
