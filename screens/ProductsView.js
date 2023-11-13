@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { firestore } from "../database/firebase";
+import { firestore } from "../services/firebase";
 import { addDoc, collection, getDocs } from "@firebase/firestore";
 import { useCarrito } from "../context/CarritoState";
 import {
