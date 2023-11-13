@@ -13,6 +13,7 @@ import {
   ActivityIndicator
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import Toast from 'react-native-toast-message';
 
 const RegisterScreen = (props) => {
   const [name, setName] = useState("");
@@ -39,17 +40,21 @@ const RegisterScreen = (props) => {
         } catch (err) {
           console.error(err);
         }
-        alert("Usuario guardado");
+        Toast.show({
+          type: "success",
+          text1: "Usuario guardado",
+          position: "bottom",
+        });
         navigation.navigate("Login");
       }
     } catch (error) {
       setIsLoading(false);
       if (error.code == "auth/email-already-in-use") {
-        alert("El email ya está en uso");
+        Toast.show({type: 'error', text1: "El email ya está en uso", position: 'bottom'})
       } else if (error.code == "auth/weak-password") {
-        alert("Contraseña débil");
+        Toast.show({type: 'error', text1: 'Contraseña débil', position: 'bottom'})
       } else {
-        alert("Error al iniciar sesion: " + error.message);
+        Toast.show({type: 'error', text1: "Error al iniciar sesion", position: 'bottom'})
       }
     }
   };

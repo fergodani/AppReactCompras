@@ -3,17 +3,20 @@ import { firestore } from "../services/firebase";
 import { addDoc, collection, getDocs } from "@firebase/firestore";
 import { useCarrito } from "../context/CarritoState";
 import {
-  Button,
   ScrollView,
   TextInput,
   View,
   StyleSheet,
   Text,
+  ActivityIndicator
 } from "react-native";
+import Toast from 'react-native-toast-message';
+import Button from "../components/Button"
 
 const ProductsView = (props) => {
   const [products, setProducts] = useState([]);
   const { addProduct, removeProduct, increase, decrease } = useCarrito();
+  const [isLoading, setIsLoading] = useState(false);
 
   // Constante para obtener la lista de productos de la base de datos
   const listProducts = collection(firestore, "products");
@@ -21,6 +24,7 @@ const ProductsView = (props) => {
   useEffect(() => {
     // Función asincrónica para obtener los datos de la base de datos
     const fetchData = async () => {
+      setIsLoading(true);
       try {
         const consultaProds = await getDocs(listProducts);
         const datosProd = consultaProds.docs.map((doc) => {
@@ -28,8 +32,10 @@ const ProductsView = (props) => {
           return { id: doc.id, name, price, description };
         });
         setProducts(datosProd);
+        setIsLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
+        setIsLoading(false);
       }
     };
     fetchData();
@@ -40,22 +46,27 @@ const ProductsView = (props) => {
       <View style={styles.inputGroup}>
         <Text style={styles.titulo}>Lista de Productos</Text>
       </View>
-
-      {products.map((product) => (
-        <View key={product.id} style={styles.productItem}>
-          <View style={styles.leftColumn}>
-            <Text>{product.name}</Text>
-            <Text>Precio: {product.price} €</Text>
-            <Button title="Detalles" onPress={() =>{}} />
-          </View>
-          <View style={styles.rightColumn}>
-            <Button
-              title="Añadir a carrito"
-              onPress={() => addProduct(product)}
-            />
-          </View>
-        </View>
-      ))}
+      {isLoading ? (
+        <ActivityIndicator size="large" />
+      ) : (
+        <>
+          {products.map((product) => (
+            <View key={product.id} style={styles.productItem}>
+              <View style={styles.leftColumn}>
+                <Text>{product.name}</Text>
+                <Text>Precio: {product.price} €</Text>
+                <Button texto="Detalles" onPress={() => {}} />
+              </View>
+              <View style={styles.rightColumn}>
+              <Button
+                texto="Añadir a carrito" 
+                action={() =>{ addProduct(product); Toast.show({type: 'info', text1: 'Producto añadido', position: 'bottom'})}}
+              />
+              </View>
+            </View>
+          ))}
+        </>
+      )}
     </ScrollView>
   );
 };
