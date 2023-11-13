@@ -3,6 +3,8 @@ import ProductsView from "./screens/ProductsView";
 import UserList from "./screens/UserList";
 import CreateUserScreen from "./screens/CreateUserScreen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import CarroView from "./screens/CarroView";
+import { CarritoProvider } from "./context/CarritoState";
 const Tab = createBottomTabNavigator();
 
 function MyStack() {
@@ -10,7 +12,7 @@ function MyStack() {
     <Tab.Navigator>
       <Tab.Screen name="CreateUserScreen" component={CreateUserScreen} />
       <Tab.Screen name="ProductsView" component={ProductsView} />
-      <Tab.Screen name="UserList" component={UserList} />
+      <Tab.Screen name="CarroView" component={CarroView} />
     </Tab.Navigator>
   );
 }
@@ -18,7 +20,9 @@ function MyStack() {
 export default function App() {
   return (
     <NavigationContainer>
-      <MyStack />
+      <CarritoProvider>
+        <MyStack />
+      </CarritoProvider>
     </NavigationContainer>
   );
 }

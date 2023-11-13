@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { firestore } from "../database/firebase";
 import { addDoc, collection, getDocs } from "@firebase/firestore";
+import { useCarrito } from "../context/CarritoState";
 import {
   Button,
   ScrollView,
@@ -10,10 +11,9 @@ import {
   Text,
 } from "react-native";
 
-const ProductsView = () => {
-  const [products, setProducts] = useState([
-    { name: "", price: "", description: "" },
-  ]);
+const ProductsView = (props) => {
+  const [products, setProducts] = useState([]);
+  const { addProduct, removeProduct, increase, decrease } = useCarrito();
 
   // Constante para obtener la lista de productos de la base de datos
   const listProducts = collection(firestore, "products");
@@ -38,7 +38,7 @@ const ProductsView = () => {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.inputGroup}>
-        <Text style={styles.title}>Lista de Productos</Text>
+        <Text style={styles.titulo}>Lista de Productos</Text>
       </View>
 
       {products.map((product) => (
@@ -46,10 +46,13 @@ const ProductsView = () => {
           <View style={styles.leftColumn}>
             <Text>{product.name}</Text>
             <Text>Precio: {product.price} €</Text>
-            <Text>Descripción: {product.description} </Text>
+            <Button title="Detalles" onPress={() =>{}} />
           </View>
           <View style={styles.rightColumn}>
-            <Button title="Comprar" onPress={() => {}} />
+            <Button
+              title="Añadir a carrito"
+              onPress={() => addProduct(product)}
+            />
           </View>
         </View>
       ))}
@@ -88,7 +91,7 @@ const styles = StyleSheet.create({
   },
   columnaDer: {
     marginLeft: 10,
-    alignSelf: "center"
+    alignSelf: "center",
   },
   titulo: {
     fontSize: 24,
