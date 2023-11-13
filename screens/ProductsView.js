@@ -4,20 +4,29 @@ import { addDoc, collection, getDocs } from "@firebase/firestore";
 import { useCarrito } from "../context/CarritoState";
 
 import {
-  Button,
   ScrollView,
   TextInput,
   View,
   StyleSheet,
   Text,
+  ActivityIndicator
 } from "react-native";
+
 import { useNavigation } from "@react-navigation/native";
+
+
+import Toast from 'react-native-toast-message';
+import Button from "../components/Button"
 
 
 const ProductsView = (props) => {
   const [products, setProducts] = useState([]);
   const { addProduct, removeProduct, increase, decrease } = useCarrito();
+
   const navigation = useNavigation();
+
+  const [isLoading, setIsLoading] = useState(false);
+
 
   // Constante para obtener la lista de productos de la base de datos
   const listProducts = collection(firestore, "products");
@@ -25,6 +34,7 @@ const ProductsView = (props) => {
   useEffect(() => {
     // Función asincrónica para obtener los datos de la base de datos
     const fetchData = async () => {
+      setIsLoading(true);
       try {
         const consultaProds = await getDocs(listProducts);
         const datosProd = consultaProds.docs.map((doc) => {
@@ -32,8 +42,10 @@ const ProductsView = (props) => {
           return { id: doc.id, name, price, description };
         });
         setProducts(datosProd);
+        setIsLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
+        setIsLoading(false);
       }
     };
     fetchData();
