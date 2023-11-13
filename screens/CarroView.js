@@ -58,6 +58,7 @@ const CarroView = () => {
           </View>
         ))}
       </ScrollView>
+
       {state.numElements != 0 ? (
         <>
           <Text style={{ fontSize: 25, padding: 10 }}>
@@ -77,6 +78,7 @@ const CarroView = () => {
           No hay ningún producto
         </Text>
       )}
+
     </View>
   );
 };
