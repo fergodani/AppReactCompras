@@ -12,6 +12,7 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import Toast from 'react-native-toast-message';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
@@ -41,11 +42,12 @@ const LoginScreen = () => {
         error.code == "auth/user-not-found" ||
         error.code == "auth/wrong-password"
       ) {
-        alert("Usuario o contraseña inválidos.");
+        Toast.show({type: 'error', text1: 'Usuario o contraseña inválidos.', position: 'bottom'})
       } else if (error.code === "auth/too-many-requests") {
         alert("Demasiados intentos");
+        Toast.show({type: 'error', text1: 'Demasiados intentos', position: 'bottom'})
       } else {
-        alert("Error de autenticación: " + error.message);
+        Toast.show({type: 'error', text1: "Usuario o contraseña inválidos." , position: 'bottom'})
       }
     }
     

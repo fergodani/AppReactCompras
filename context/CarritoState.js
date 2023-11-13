@@ -36,8 +36,8 @@ const carritoReducer = (state, action) => {
       state.products = state.products.filter(
         (item) => action.payload.id !== item.id
       );
-      state.total -= action.payload.price;
-      state.numElements -= 1;
+      state.total -= action.payload.price * action.payload.quantity;
+      state.numElements -= action.payload.quantity;
       return {
         ...state,
       };
@@ -48,7 +48,7 @@ const carritoReducer = (state, action) => {
       );
       product.quantity += 1;
       state.total += product.price;
-
+      state.numElements += 1;
       return {
         ...state,
       };
@@ -61,14 +61,15 @@ const carritoReducer = (state, action) => {
         state.products = state.products.filter(
           (item) => action.payload.id !== item.id
         );
-        state.total -= action.payload.price;
-        state.numElements -= 1;
+        state.total -= action.payload.price * action.payload.quantity;
+        state.numElements -= action.payload.quantity;
         return {
           ...state,
         };
       }
       productD.quantity -= 1;
       state.total -= productD.price;
+      state.numElements -= 1;
       return {
         ...state,
       };
