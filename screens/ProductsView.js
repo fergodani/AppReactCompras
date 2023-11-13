@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { firestore } from "../services/firebase";
 import { addDoc, collection, getDocs } from "@firebase/firestore";
 import { useCarrito } from "../context/CarritoState";
+
 import {
   Button,
   ScrollView,
@@ -10,10 +11,13 @@ import {
   StyleSheet,
   Text,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+
 
 const ProductsView = (props) => {
   const [products, setProducts] = useState([]);
   const { addProduct, removeProduct, increase, decrease } = useCarrito();
+  const navigation = useNavigation();
 
   // Constante para obtener la lista de productos de la base de datos
   const listProducts = collection(firestore, "products");
@@ -46,14 +50,10 @@ const ProductsView = (props) => {
           <View style={styles.leftColumn}>
             <Text>{product.name}</Text>
             <Text>Precio: {product.price} €</Text>
-            <Button title="Detalles" onPress={() =>{}} />
+            <Button title="Detalles" onPress={() =>{navigation.navigate("ProductsDetail", 
+            {name: product.name, price: product.price, description: product.description})}} />
           </View>
-          <View style={styles.rightColumn}>
-            <Button
-              title="Añadir a carrito"
-              onPress={() => addProduct(product)}
-            />
-          </View>
+          
         </View>
       ))}
     </ScrollView>

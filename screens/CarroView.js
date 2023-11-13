@@ -42,7 +42,7 @@ const CarroView = () => {
           </View>
         ))}
       </ScrollView>
-      <Text> Precio total: {state.total} €</Text>
+      <Text> Precio total: {state.total * state.products.quantity} €</Text>
       <Button title="Comprar" onPress={() =>{}} />
       <View></View>
     </View>

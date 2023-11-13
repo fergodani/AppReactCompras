@@ -14,19 +14,19 @@ const carritoReducer = (state, action) => {
   // Tu lógica de reducer aquí...
   switch (action.type) {
     case "ADD_PRODUCT":
+      console.log(action.payload);
       const itemProduct = state.products.find(
         (item) => item.id === action.payload.id
       );
       state.total += action.payload.price;
       state.numElements += 1;
       if (itemProduct) {
-        itemProduct.quantity += 1;
+        itemProduct.quantity += action.payload.quantity;
         return {
           ...state,
           products: [...state.products],
         };
       } else {
-        action.payload.quantity = 1;
         return {
           ...state,
           products: [...state.products, action.payload],
@@ -72,7 +72,7 @@ const carritoReducer = (state, action) => {
       return {
         ...state,
       };
-
+      
     default:
       return state;
   }
@@ -82,7 +82,7 @@ const CarritoProvider = ({ children }) => {
   const [state, dispatch] = useReducer(carritoReducer, initialState);
 
   const addProduct = (product) => {
-    dispatch({ type: "ADD_PRODUCT", payload: product });
+    dispatch({ type: "ADD_PRODUCT", payload: product});
   };
 
   const removeProduct = (product) => {
@@ -97,7 +97,13 @@ const CarritoProvider = ({ children }) => {
   };
   return (
     <CarritoContext.Provider
-      value={{ state, addProduct, removeProduct, increase, decrease }}
+      value={{
+        state,
+        addProduct,
+        removeProduct,
+        increase,
+        decrease,
+      }}
     >
       {children}
     </CarritoContext.Provider>
@@ -106,7 +112,7 @@ const CarritoProvider = ({ children }) => {
 
 const useCarrito = () => {
   const context = useContext(CarritoContext);
-  const { state, addProduct, removeProduct, increase, decrease } = context;
+
   if (!context) {
     throw new Error(
       "useSharedState debe ser utilizado dentro de SharedStateProvider"
