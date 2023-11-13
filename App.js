@@ -15,10 +15,8 @@ const Stack = createNativeStackNavigator();
 function MainTab() {
   return (
     <Tab.Navigator>
-
-      <Tab.Screen name="CarroView" component={CarroView} />
-      <Tab.Screen name="Productos" component={ProductsView} />
-
+      <Tab.Screen name="Catálogo" component={ProductsView} />
+      <Tab.Screen name="Carrito" component={CarroView} />
     </Tab.Navigator>
   );
 }
@@ -38,7 +36,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <CarritoProvider>
-        <MyStack />
+        <MainStack />
       </CarritoProvider>
 
     </NavigationContainer>

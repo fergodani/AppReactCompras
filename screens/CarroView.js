@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { firestore } from "../database/firebase";
-import { addDoc, collection, getDocs } from "@firebase/firestore";
 import { Button, ScrollView, View, StyleSheet, Text } from "react-native";
 import { useCarrito } from "../context/CarritoState";
 
