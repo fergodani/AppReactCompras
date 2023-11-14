@@ -1,17 +1,10 @@
 import React, { useState, useEffect } from "react";
-import {
-  ScrollView,
-  TextInput,
-  View,
-  StyleSheet,
-  Text,
-} from "react-native";
+import { ScrollView, Image, View, StyleSheet, Text } from "react-native";
 import Button from "../components/Button";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { Dropdown } from "react-native-element-dropdown";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useCarrito } from "../context/CarritoState";
-
 
 const ProductsDetail = () => {
   const [quantity, setQuantity] = useState(1);
@@ -20,15 +13,16 @@ const ProductsDetail = () => {
   const { addProduct, increase } = useCarrito();
   const navigation2 = useNavigation();
 
-
   return (
     <View style={[styles.container, styles.productItem]}>
+      <Image
+        style={styles.image}
+        source={require("../assets/placeholder.png")}
+      />
       <Text style={styles.title}>{name}</Text>
       <Text style={styles.description}>Precio artículo: {price} €</Text>
       <Text style={styles.description}>{description}</Text>
-      <Text style={styles.description}>
-        Seleccione cantidad:
-      </Text>
+      <Text style={styles.description}>Seleccione cantidad:</Text>
       <Dropdown
         style={styles.dropdown}
         placeholderStyle={styles.placeholderStyle}
@@ -40,24 +34,35 @@ const ProductsDetail = () => {
         placeholder="1"
         labelField="label"
         valueField="value"
-        
-        onChange={item => {
+        onChange={(item) => {
           setQuantity(item.value);
         }}
         renderLeftIcon={() => (
-          <AntDesign style={styles.icon} color="black" name="Safety" size={15} />
+          <AntDesign
+            style={styles.icon}
+            color="black"
+            name="Safety"
+            size={15}
+          />
         )}
       />
-      
-      <Text style={[styles.description, {marginBottom: 15}]}>Precio total: {price * quantity} €</Text>
+
+      <Text style={[styles.description, { marginBottom: 15 }]}>
+        Precio total: {price * quantity} €
+      </Text>
 
       <View>
-        <Button 
+        <Button
           texto="Añadir a carrito"
-          action={() => {addProduct({ name, price, description,
-             quantity: parseInt(quantity)}),
-          navigation2.navigate("Carrito")
-        }}
+          action={() => {
+            addProduct({
+              name,
+              price,
+              description,
+              quantity: parseInt(quantity),
+            }),
+              navigation2.navigate("Carrito");
+          }}
         />
       </View>
     </View>
@@ -80,10 +85,6 @@ const data = [
 ];
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 35,
-  },
   title: {
     fontSize: 24,
     fontWeight: "bold",
@@ -91,13 +92,11 @@ const styles = StyleSheet.create({
   },
   description: {
     fontSize: 16,
-    marginTop: 10
+    marginTop: 10,
   },
   productItem: {
     marginBottom: 10,
     padding: 10,
-    borderWidth: 1,
-    borderColor: "#cccccc",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
@@ -144,6 +143,10 @@ const styles = StyleSheet.create({
   },
   selectedStyle: {
     borderRadius: 12,
+  },
+  image: {
+    width: 200,
+    aspectRatio: 1
   },
 });
 

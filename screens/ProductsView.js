@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { firestore } from "../services/firebase";
 import { addDoc, collection, getDocs } from "@firebase/firestore";
 
@@ -9,6 +9,9 @@ import {
   StyleSheet,
   Text,
   ActivityIndicator,
+  Image,
+  RefreshControl,
+  TouchableOpacity
 } from "react-native";
 
 import { useNavigation } from "@react-navigation/native";
@@ -44,38 +47,68 @@ const ProductsView = (props) => {
     fetchData();
   }, []);
 
+  const onRefresh = useCallback(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        const consultaProds = await getDocs(listProducts);
+        const datosProd = consultaProds.docs.map((doc) => {
+          const { name, price, description } = doc.data();
+          return { id: doc.id, name, price, description };
+        });
+        setProducts(datosProd);
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView
+      style={styles.container}
+      refreshControl={
+        <RefreshControl
+          refreshing={isLoading}
+          onRefresh={onRefresh}
+          colors={["#333"]}
+          progressBackgroundColor="#ffffff"
+        />
+      }
+    >
       <View style={styles.inputGroup}>
         <Text style={styles.titulo}>Lista de Productos</Text>
       </View>
-      {isLoading ? (
-              <ActivityIndicator size="large" />
-            ) : (
-              <>
-              {products.map((product) => (
-                <View key={product.id} style={styles.productItem}>
-                  <View style={styles.flexRow}>
-                    <View>
-                    <Text style={styles.titulo}>{product.name}</Text>
-                    <Text style={{fontSize: 20, marginTop: 3}}>{product.price} €</Text>
-                    </View>
-                    <Button
-                      texto="Detalles"
-                      action={() => {
-                        navigation.navigate("ProductsDetail", {
-                          name: product.name,
-                          price: product.price,
-                          description: product.description,
-                        });
-                      }}
-                    />
-                  </View>
-                </View>
-              ))}
-              </>
-            )}
-      
+      {!isLoading && (
+         <>
+         {products.map((product) => (
+          <TouchableOpacity key={product.id} style={styles.productItem}
+          underlayColor='#efefef'
+          onPress={() => {
+            navigation.navigate("ProductsDetail", {
+              name: product.name,
+              price: product.price,
+              description: product.description,
+            });
+          }}>
+             <View style={styles.flexRow}>
+               <Image
+                 style={styles.image}
+                 source={require("../assets/placeholder.png")}
+               />
+               <View >
+                 <Text style={styles.titulo}>{product.name}</Text>
+                 <Text style={{ fontSize: 20, marginTop: 3 }}>
+                   {product.price} €
+                 </Text>
+               </View>
+             </View>
+           </TouchableOpacity>
+         ))}
+       </>
+      ) }
     </ScrollView>
   );
 };
@@ -120,7 +153,11 @@ const styles = StyleSheet.create({
   },
   flexRow: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    flex: 1
-  }
+    gap: 50,
+    flex: 1,
+  },
+  image: {
+    width: 70,
+    aspectRatio: 1,
+  },
 });

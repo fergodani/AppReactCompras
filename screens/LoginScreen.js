@@ -59,7 +59,7 @@ const LoginScreen = () => {
 
 
   return (
-    <KeyboardAvoidingView style={styles.container} behavior="padding">
+
       <View style={styles.container}>
         <Text style={styles.title}>Login</Text>
         <TextInput
@@ -76,7 +76,7 @@ const LoginScreen = () => {
           onChangeText={setPassword}
         />
         {isLoading ? (
-          <ActivityIndicator size="large" />
+          <ActivityIndicator size="large" color='#333' />
         ) : (
           <TouchableOpacity
             style={styles.buttonContainer}
@@ -89,7 +89,6 @@ const LoginScreen = () => {
           <Text style={styles.title5}>Registrarse</Text>
         </TouchableOpacity>
       </View>
-    </KeyboardAvoidingView>
   );
 };
 

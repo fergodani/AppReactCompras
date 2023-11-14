@@ -94,7 +94,7 @@ const RegisterScreen = (props) => {
         />
 
         {isLoading ? (
-          <ActivityIndicator size="large" />
+          <ActivityIndicator size="large" color='#333' />
         ) : (
           <TouchableOpacity
             style={styles.buttonContainer}
