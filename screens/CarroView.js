@@ -26,8 +26,8 @@ const CarroView = () => {
   return (
     <View>
       <ScrollView>
-        {state.products.map((productoEnCarro) => (
-          <View key={productoEnCarro.id} style={styles.card}>
+        {state.products.map((productoEnCarro, index) => (
+          <View key={index} style={styles.card}>
             <View>
               <Text style={styles.titulo}>{productoEnCarro.name}</Text>
               <View style={styles.flexRow}>

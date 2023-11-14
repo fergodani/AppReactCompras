@@ -72,8 +72,8 @@ const OrderDetails = () => {
 
   return (
     <ScrollView>
-      {state.products.map((productoEnCarro) => (
-        <View key={productoEnCarro.id} style={styles.card}>
+      {state.products.map((productoEnCarro, index) => (
+        <View key={index} style={styles.card}>
           <View>
             <Text style={{fontSize: 25, fontWeight: 'bold', padding: 10}}>{productoEnCarro.name} x {productoEnCarro.quantity} uds</Text>
             <Text style={{ fontSize: 20, marginLeft: 15}}>
