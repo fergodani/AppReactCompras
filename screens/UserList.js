@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { firestore } from "../database/firebase";
+import { firestore } from "../services/firebase";
 import { addDoc, collection } from "@firebase/firestore";
 import { Button, ScrollView, TextInput, View, StyleSheet, Text } from "react-native";
 
-const UsersList = (props) => {
+const UserList = (props) => {
  
   return (
     <ScrollView style={styles.container}>
@@ -14,10 +14,10 @@ const UsersList = (props) => {
   );
 };
 
-export default UsersList;
+export default UserList;
 
-UsersList.navigationOptions={
-    title: "UsersList"   
+UserList.navigationOptions={
+    title: "UserList"   
 };
 
 const styles=StyleSheet.create({
