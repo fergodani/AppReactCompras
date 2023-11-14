@@ -18,8 +18,8 @@ const carritoReducer = (state, action) => {
       const itemProduct = state.products.find(
         (item) => item.id === action.payload.id
       );
-      state.total += action.payload.price;
-      state.numElements += 1;
+      state.total += action.payload.price * action.payload.quantity;
+      state.numElements += action.payload.quantity;
       if (itemProduct) {
         itemProduct.quantity += action.payload.quantity;
         return {

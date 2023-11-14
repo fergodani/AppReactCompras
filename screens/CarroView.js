@@ -6,14 +6,13 @@ import { useCarrito } from "../context/CarritoState";
 import { useNavigation } from "@react-navigation/native";
 
 const CarroView = () => {
-  const { state, addProduct, removeProduct, increase, decrease } = useCarrito();
+  const { state, removeProduct, increase, decrease } = useCarrito();
   const [carrito, setCarrito] = useState({
     products: [],
     total: 0,
     numElements: 0,
   });
   const navigation = useNavigation();
-
   useEffect(() => {
     setCarrito(state);
   }, []);
@@ -21,6 +20,8 @@ const CarroView = () => {
   useEffect(() => {
     setCarrito(state);
   }, [state]);
+
+
 
   return (
     <View>
@@ -78,7 +79,6 @@ const CarroView = () => {
           No hay ningún producto
         </Text>
       )}
-
     </View>
   );
 };
