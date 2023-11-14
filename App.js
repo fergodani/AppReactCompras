@@ -39,7 +39,7 @@ function MainTab() {
           headerShown: true
         })}
       >
-      <Tab.Screen name="Catálogo" component={ProductsView} />
+      <Tab.Screen name="Catálogo" component={CatalogoStack} />
       <Tab.Screen name="Carrito" component={CarritoStack} options={{ tabBarBadge: state.numElements }}/>
       <Tab.Screen name="Perfil" component={ProfileScreen}/>
     </Tab.Navigator>

@@ -88,7 +88,7 @@ const ProfileScreen = () => {
                 <Text style={{textAlign: 'center'}}>{order.total} €</Text>
                 <Text style={styles.titulo}>Productos</Text>
                 {order.products.map((item) => (
-                  <View key={item.product.id}>
+                  <View key={order.id + item.product.id}>
                     <Text style={{textAlign: 'center'}}>{item.product.name}</Text>
                     <Text style={{textAlign: 'center'}}>{item.product.price} €</Text>
                     <Text style={{textAlign: 'center'}}>Uds: {item.product.quantity}</Text>

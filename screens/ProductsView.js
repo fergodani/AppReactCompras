@@ -49,27 +49,33 @@ const ProductsView = (props) => {
       <View style={styles.inputGroup}>
         <Text style={styles.titulo}>Lista de Productos</Text>
       </View>
-
-      {products.map((product) => (
-        <View key={product.id} style={styles.productItem}>
-          <View style={styles.flexRow}>
-            <View>
-            <Text style={styles.titulo}>{product.name}</Text>
-            <Text style={{fontSize: 20, marginTop: 3}}>{product.price} €</Text>
-            </View>
-            <Button
-              texto="Detalles"
-              action={() => {
-                navigation.navigate("ProductsDetail", {
-                  name: product.name,
-                  price: product.price,
-                  description: product.description,
-                });
-              }}
-            />
-          </View>
-        </View>
-      ))}
+      {isLoading ? (
+              <ActivityIndicator size="large" />
+            ) : (
+              <>
+              {products.map((product) => (
+                <View key={product.id} style={styles.productItem}>
+                  <View style={styles.flexRow}>
+                    <View>
+                    <Text style={styles.titulo}>{product.name}</Text>
+                    <Text style={{fontSize: 20, marginTop: 3}}>{product.price} €</Text>
+                    </View>
+                    <Button
+                      texto="Detalles"
+                      action={() => {
+                        navigation.navigate("ProductsDetail", {
+                          name: product.name,
+                          price: product.price,
+                          description: product.description,
+                        });
+                      }}
+                    />
+                  </View>
+                </View>
+              ))}
+              </>
+            )}
+      
     </ScrollView>
   );
 };
