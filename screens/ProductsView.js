@@ -1,21 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { firestore } from "../services/firebase";
 import { addDoc, collection, getDocs } from "@firebase/firestore";
-import { useCarrito } from "../context/CarritoState";
+
 import {
   ScrollView,
   TextInput,
   View,
   StyleSheet,
   Text,
-  ActivityIndicator
+  ActivityIndicator,
 } from "react-native";
-import Toast from 'react-native-toast-message';
-import Button from "../components/Button"
+
+import { useNavigation } from "@react-navigation/native";
+import Button from "../components/Button";
 
 const ProductsView = (props) => {
   const [products, setProducts] = useState([]);
-  const { addProduct, removeProduct, increase, decrease } = useCarrito();
+
+  const navigation = useNavigation();
+
   const [isLoading, setIsLoading] = useState(false);
 
   // Constante para obtener la lista de productos de la base de datos
@@ -46,27 +49,27 @@ const ProductsView = (props) => {
       <View style={styles.inputGroup}>
         <Text style={styles.titulo}>Lista de Productos</Text>
       </View>
-      {isLoading ? (
-        <ActivityIndicator size="large" />
-      ) : (
-        <>
-          {products.map((product) => (
-            <View key={product.id} style={styles.productItem}>
-              <View style={styles.leftColumn}>
-                <Text>{product.name}</Text>
-                <Text>Precio: {product.price} €</Text>
-                <Button texto="Detalles" onPress={() => {}} />
-              </View>
-              <View style={styles.rightColumn}>
-              <Button
-                texto="Añadir a carrito" 
-                action={() =>{ addProduct(product); Toast.show({type: 'info', text1: 'Producto añadido', position: 'bottom'})}}
-              />
-              </View>
+
+      {products.map((product) => (
+        <View key={product.id} style={styles.productItem}>
+          <View style={styles.flexRow}>
+            <View>
+            <Text style={styles.titulo}>{product.name}</Text>
+            <Text style={{fontSize: 20, marginTop: 3}}>{product.price} €</Text>
             </View>
-          ))}
-        </>
-      )}
+            <Button
+              texto="Detalles"
+              action={() => {
+                navigation.navigate("ProductsDetail", {
+                  name: product.name,
+                  price: product.price,
+                  description: product.description,
+                });
+              }}
+            />
+          </View>
+        </View>
+      ))}
     </ScrollView>
   );
 };
@@ -95,7 +98,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#cccccc",
     flexDirection: "row",
-    justifyContent: "space-between",
   },
   columnaIzq: {
     flex: 1,
@@ -110,4 +112,9 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#333",
   },
+  flexRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    flex: 1
+  }
 });
