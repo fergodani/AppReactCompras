@@ -14,9 +14,8 @@ const carritoReducer = (state, action) => {
   // Tu lógica de reducer aquí...
   switch (action.type) {
     case "ADD_PRODUCT":
-      console.log(action.payload);
       const itemProduct = state.products.find(
-        (item) => item.id === action.payload.id
+        (item) => item.name === action.payload.name
       );
       state.total += action.payload.price * action.payload.quantity;
       state.numElements += action.payload.quantity;
@@ -34,7 +33,7 @@ const carritoReducer = (state, action) => {
       }
     case "REMOVE_PRODUCT":
       state.products = state.products.filter(
-        (item) => action.payload.id !== item.id
+        (item) => action.payload.name !== item.name
       );
       state.total -= action.payload.price * action.payload.quantity;
       state.numElements -= action.payload.quantity;
@@ -44,7 +43,7 @@ const carritoReducer = (state, action) => {
 
     case "INCREASE":
       let product = state.products.find(
-        (item) => action.payload.id === item.id
+        (item) => action.payload.name === item.name
       );
       product.quantity += 1;
       state.total += product.price;
@@ -55,11 +54,11 @@ const carritoReducer = (state, action) => {
 
     case "DECREASE":
       let productD = state.products.find(
-        (item) => action.payload.id === item.id
+        (item) => action.payload.name === item.name
       );
       if (productD.quantity <= 1) {
         state.products = state.products.filter(
-          (item) => action.payload.id !== item.id
+          (item) => action.payload.name !== item.name
         );
         state.total -= action.payload.price * action.payload.quantity;
         state.numElements -= action.payload.quantity;
