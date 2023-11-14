@@ -9,8 +9,9 @@ import { CarritoProvider } from "./context/CarritoState";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useCarrito } from "./context/CarritoState";
-import OrderDetails from "./screens/OrderDetails";
-import Toast from "react-native-toast-message";
+import OrderDetails from "./screens/OrderDetails"
+import ProfileScreen from "./screens/ProfileScreen"
+import Toast from 'react-native-toast-message';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -22,28 +23,25 @@ function MainTab() {
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
-
-          if (route.name === "Carrito") {
-            iconName = focused ? "ios-cart" : "ios-cart-outline";
-          } else if (route.name === "Catálogo") {
-            iconName = focused ? "ios-pricetag" : "ios-pricetag-outline";
-          } else {
-            iconName = focused ? "ios-person" : "ios-person-outline";
-          }
-          return <Ionicons name={iconName} size={size} color={color} />;
-        },
-        tabBarActiveTintColor: "#333",
-        tabBarInactiveTintColor: "gray",
-        headerShown: true,
-      })}
-    >
-      <Tab.Screen name="Catálogo" component={CatalogoStack} />
-      <Tab.Screen
-        name="Carrito"
-        component={CarritoStack}
-        options={{ tabBarBadge: state.numElements }}
-      />
-      <Tab.Screen name="Perfil" component={CarroView} />
+            if (route.name === 'Carrito') {
+              iconName = focused
+                ? 'ios-cart'
+                : 'ios-cart-outline';
+            } else if (route.name === 'Catálogo') {
+              iconName = focused ? 'ios-pricetag' : 'ios-pricetag-outline';
+            } else {
+              iconName = focused ? 'ios-person' : 'ios-person-outline';
+            }
+            return <Ionicons name={iconName} size={size} color={color} />;
+          },
+          tabBarActiveTintColor: '#333',
+          tabBarInactiveTintColor: 'gray',
+          headerShown: true
+        })}
+      >
+      <Tab.Screen name="Catálogo" component={ProductsView} />
+      <Tab.Screen name="Carrito" component={CarritoStack} options={{ tabBarBadge: state.numElements }}/>
+      <Tab.Screen name="Perfil" component={ProfileScreen}/>
     </Tab.Navigator>
   );
 }

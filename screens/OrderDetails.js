@@ -32,12 +32,12 @@ const OrderDetails = () => {
       const productCollection = collection(firestore, "productos");
       const userRef = doc(usersCollection, auth.currentUser.uid);
       const productsWithQuantity = state.products.map((p) => ({
-        product: doc(productCollection, p.id),
+        product: p,
         quantity: p.quantity,
       }));
 
       const data = {
-        products: productsWithQuantity,
+        products: state.products,
         user: userRef,
         total: state.total,
         address,
