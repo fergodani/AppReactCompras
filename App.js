@@ -11,6 +11,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useCarrito } from "./context/CarritoState";
 import OrderDetails from "./screens/OrderDetails"
+import ProfileScreen from "./screens/ProfileScreen"
 import Toast from 'react-native-toast-message';
 
 const Tab = createBottomTabNavigator();
@@ -42,7 +43,7 @@ function MainTab() {
       >
       <Tab.Screen name="Catálogo" component={ProductsView} />
       <Tab.Screen name="Carrito" component={CarritoStack} options={{ tabBarBadge: state.numElements }}/>
-      <Tab.Screen name="Perfil" component={CarroView}/>
+      <Tab.Screen name="Perfil" component={ProfileScreen}/>
     </Tab.Navigator>
   );
 }
