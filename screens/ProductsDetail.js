@@ -1,25 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { firestore } from "../services/firebase";
-import { addDoc, collection, getDocs } from "@firebase/firestore";
 import {
-  Button,
   ScrollView,
   TextInput,
   View,
   StyleSheet,
   Text,
 } from "react-native";
+import Button from "../components/Button";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { Dropdown } from "react-native-element-dropdown";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useCarrito } from "../context/CarritoState";
-import CarroView from "./CarroView";
+
 
 const ProductsDetail = () => {
-  const [quantity, setQuantity] = useState(null);
+  const [quantity, setQuantity] = useState(1);
   const navigation = useRoute();
   const { name, price, description } = navigation.params || {};
-  const { addProduct } = useCarrito();
+  const { addProduct, increase } = useCarrito();
   const navigation2 = useNavigation();
 
 
@@ -39,10 +37,10 @@ const ProductsDetail = () => {
         iconStyle={styles.iconStyle}
         data={data}
         maxHeight={300}
-        placeholder="0"
+        placeholder="1"
         labelField="label"
         valueField="value"
-        value={quantity}
+        
         onChange={item => {
           setQuantity(item.value);
         }}
@@ -55,9 +53,11 @@ const ProductsDetail = () => {
 
       <View>
         <Button 
-          title="Añadir a carrito"
-          onPress={() => {addProduct({ name, price, description, quantity: parseInt(quantity) }),
-          navigation2.navigate("Carrito")}}
+          texto="Añadir a carrito"
+          action={() => {addProduct({ name, price, description,
+             quantity: parseInt(quantity)}),
+          navigation2.navigate("Carrito")
+        }}
         />
       </View>
     </View>
