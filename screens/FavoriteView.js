@@ -6,7 +6,9 @@ import {
   StyleSheet,
   Text,
   ActivityIndicator,
-  RefreshControl
+  RefreshControl,
+  TouchableOpacity,
+  Image,
 } from "react-native";
 import Button from "../components/Button";
 import { firestore, auth } from "../services/firebase";
@@ -122,32 +124,36 @@ const FavoriteView = (props) => {
       {!isLoading && (
          <> 
          {favs.map((productFav, index) => (
-           <View key={index} style={styles.productItem}>
+           <TouchableOpacity
+           key={index}
+           style={styles.productItem}
+           underlayColor="#efefef"
+           onPress={() => {
+             navigation.navigate("ProductsDetail", {
+               name: productFav.name,
+               price: productFav.price,
+               description: productFav.description,
+               image: productFav.image
+             });
+           }}
+         >
            <View style={styles.flexRow}>
+             <Image
+               style={styles.image}
+               source={{uri: productFav.image}}
+             />
              <View>
                <Text style={styles.titulo}>{productFav.name}</Text>
                <Text style={{ fontSize: 20, marginTop: 3 }}>
                  {productFav.price} €
                </Text>
              </View>
-             <View style={{ flexDirection: "column" }}>
-                 <IconButtonFav
-                   icon={"ios-star"}
-                   action={() => handleRemoveToFavs(productFav)}
-                 />
-               <Button
-                 texto="Detalles"
-                 action={() => {
-                   navigation.navigate("ProductsDetail", {
-                     name: productFav.name,
-                     price: productFav.price,
-                     description: productFav.description,
-                   });
-                 }}
+               <IconButtonFav
+                 icon={"ios-star"}
+                 action={() => handleRemoveToFavs(productFav)}
                />
-             </View>
            </View>
-         </View>
+         </TouchableOpacity>
          ))}
        </>
       )}
@@ -244,6 +250,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     flex: 1,
+  },
+  image: {
+    width: 70,
+    aspectRatio: 1,
+    borderRadius: 5,
   },
 });
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { getStorage, ref } from "firebase/storage";
 
 import { firestore, auth } from "../services/firebase";
 import {
@@ -13,7 +14,6 @@ import {
   updateDoc,
 } from "@firebase/firestore";
 
-
 import {
   ScrollView,
   TextInput,
@@ -23,8 +23,7 @@ import {
   ActivityIndicator,
   Image,
   RefreshControl,
-  TouchableOpacity
-
+  TouchableOpacity,
 } from "react-native";
 
 import { useNavigation } from "@react-navigation/native";
@@ -35,6 +34,15 @@ const ProductsView = (props) => {
   const [products, setProducts] = useState([]);
   const [favs, setFavorites] = useState([]);
   const navigation = useNavigation();
+
+  const obtengoImage = async (product) => {
+    const storageRef = storage.ref("images"); // Ruta a la carpeta "images" en tu Storage
+    const imageRef = storageRef.child(product.image); // Ruta específica de la imagen en el Storage
+
+    // Obtener la URL de descarga de la imagen
+    const imageUrl = await imageRef.getDownloadURL();
+    return imageUrl;
+  };
 
   //const [favsCollection, setFavs] = useState([]);
   const favsCollection = collection(firestore, "userFavs");
@@ -50,8 +58,8 @@ const ProductsView = (props) => {
       try {
         const consultaProds = await getDocs(listProducts);
         const datosProd = consultaProds.docs.map((doc) => {
-          const { name, price, description } = doc.data();
-          return { name, price, description };
+          const { name, price, description, image } = doc.data();
+          return { name, price, description, image };
         });
         setProducts(datosProd);
 
@@ -83,8 +91,8 @@ const ProductsView = (props) => {
       try {
         const consultaProds = await getDocs(listProducts);
         const datosProd = consultaProds.docs.map((doc) => {
-          const { name, price, description } = doc.data();
-          return { name, price, description };
+          const { name, price, description, image } = doc.data();
+          return { name, price, description, image };
         });
         setProducts(datosProd);
 
@@ -98,6 +106,7 @@ const ProductsView = (props) => {
         querySnapshot.forEach((doc) => {
           productsRetrieved = doc.data().products;
         });
+        console.log(datosProd);
 
         setFavorites(productsRetrieved);
         setIsLoading(false);
@@ -183,7 +192,6 @@ const ProductsView = (props) => {
     }
   };
 
-
   return (
     <ScrollView
       style={styles.container}
@@ -200,44 +208,45 @@ const ProductsView = (props) => {
         <Text style={styles.titulo}>Lista de Productos</Text>
       </View>
       {!isLoading && (
-         <>
-         {products.map((product) => (
-          <TouchableOpacity key={product.id} style={styles.productItem}
-          underlayColor='#efefef'
-          onPress={() => {
-            navigation.navigate("ProductsDetail", {
-              name: product.name,
-              price: product.price,
-              description: product.description,
-            });
-          }}>
-             <View style={styles.flexRow}>
-               <Image
-                 style={styles.image}
-                 source={require("../assets/placeholder.png")}
-               />
-               <View >
-                 <Text style={styles.titulo}>{product.name}</Text>
-                 <Text style={{ fontSize: 20, marginTop: 3 }}>
-                   {product.price} €
-                 </Text>
-               </View>
- {includesWithLooseEquality(favs, product) ? (
-                    <IconButtonFav
-                      icon={"ios-star"}
-                      action={() => handleRemoveToFavs(product)}
-                    />
-                  ) : (
-                    <IconButtonFav
-                      icon={"ios-star-outline"}
-                      action={() => handleAddToFavs(product)}
-                    />
-                  )}
-             </View>
-           </TouchableOpacity>
-         ))}
-       </>
-      ) }
+        <>
+          {products.map((product, index) => (
+            <TouchableOpacity
+              key={index}
+              style={styles.productItem}
+              underlayColor="#efefef"
+              onPress={() => {
+                navigation.navigate("ProductsDetail", {
+                  name: product.name,
+                  price: product.price,
+                  description: product.description,
+                  image: product.image
+                });
+              }}
+            >
+              <View style={styles.flexRow}>
+                <Image style={styles.image} source={{uri: product.image}} />
+                <View>
+                  <Text style={styles.titulo}>{product.name}</Text>
+                  <Text style={{ fontSize: 20, marginTop: 3 }}>
+                    {product.price} €
+                  </Text>
+                </View>
+                {includesWithLooseEquality(favs, product) ? (
+                  <IconButtonFav
+                    icon={"ios-star"}
+                    action={() => handleRemoveToFavs(product)}
+                  />
+                ) : (
+                  <IconButtonFav
+                    icon={"ios-star-outline"}
+                    action={() => handleAddToFavs(product)}
+                  />
+                )}
+              </View>
+            </TouchableOpacity>
+          ))}
+        </>
+      )}
     </ScrollView>
   );
 };
@@ -288,6 +297,6 @@ const styles = StyleSheet.create({
   image: {
     width: 70,
     aspectRatio: 1,
+    borderRadius: 5,
   },
-
 });
