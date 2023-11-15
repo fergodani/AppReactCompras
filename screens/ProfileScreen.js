@@ -82,8 +82,6 @@ const ProfileScreen = () => {
           colors={["#333"]}
           progressBackgroundColor="#ffffff"
         />
-      }
-    >
       {!isLoading && (
         <>
           <Text style={{fontSize: 30, fontWeight: '600'}}>Bienvenido/a, {user.name} {user.surname}</Text>
@@ -109,6 +107,7 @@ const ProfileScreen = () => {
         </>
       )}
     </ScrollView>
+
   );
 };
 
