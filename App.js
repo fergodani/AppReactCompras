@@ -13,6 +13,7 @@ import OrderDetails from "./screens/OrderDetails";
 import ProfileScreen from "./screens/ProfileScreen";
 import FavoriteView from "./screens/FavoriteView";
 import Toast from 'react-native-toast-message';
+import { StatusBar } from "react-native";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -21,6 +22,7 @@ function MainTab() {
   const { state } = useCarrito();
   return (
     <Tab.Navigator
+      
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
@@ -38,9 +40,13 @@ function MainTab() {
             }
             return <Ionicons name={iconName} size={size} color={color} />;
           },
-          tabBarActiveTintColor: '#333',
-          tabBarInactiveTintColor: 'gray',
-          headerShown: true
+          
+          tabBarActiveTintColor: 'white',
+          tabBarInactiveTintColor: 'white',
+          headerShown: true,
+          headerStyle: {backgroundColor: '#333'},
+          tabBarStyle: {backgroundColor: '#333', paddingBottom: 5},
+          headerTintColor: 'white'
         })}
       >
       <Tab.Screen name="Catálogo" component={CatalogoStack} />
@@ -98,6 +104,10 @@ export default function App() {
       <CarritoProvider>
         <MainStack />
         <Toast />
+        <StatusBar
+        hidden={false}
+        barStyle='light-content'
+      />
       </CarritoProvider>
     </NavigationContainer>
   );

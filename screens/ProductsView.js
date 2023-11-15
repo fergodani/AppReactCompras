@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+
 import { firestore, auth } from "../services/firebase";
 import {
   getDoc,
@@ -12,6 +13,7 @@ import {
   updateDoc,
 } from "@firebase/firestore";
 
+
 import {
   ScrollView,
   TextInput,
@@ -19,7 +21,10 @@ import {
   StyleSheet,
   Text,
   ActivityIndicator,
+  Image,
   RefreshControl,
+  TouchableOpacity
+
 } from "react-native";
 
 import { useNavigation } from "@react-navigation/native";
@@ -178,6 +183,7 @@ const ProductsView = (props) => {
     }
   };
 
+
   return (
     <ScrollView
       style={styles.container}
@@ -194,18 +200,29 @@ const ProductsView = (props) => {
         <Text style={styles.titulo}>Lista de Productos</Text>
       </View>
       {!isLoading && (
-        <>
-          {products.map((product, index) => (
-            <View key={index} style={styles.productItem}>
-              <View style={styles.flexRow}>
-                <View>
-                  <Text style={styles.titulo}>{product.name}</Text>
-                  <Text style={{ fontSize: 20, marginTop: 3 }}>
-                    {product.price} €
-                  </Text>
-                </View>
-                <View style={{ flexDirection: "column" }}>
-                  {includesWithLooseEquality(favs, product) ? (
+         <>
+         {products.map((product) => (
+          <TouchableOpacity key={product.id} style={styles.productItem}
+          underlayColor='#efefef'
+          onPress={() => {
+            navigation.navigate("ProductsDetail", {
+              name: product.name,
+              price: product.price,
+              description: product.description,
+            });
+          }}>
+             <View style={styles.flexRow}>
+               <Image
+                 style={styles.image}
+                 source={require("../assets/placeholder.png")}
+               />
+               <View >
+                 <Text style={styles.titulo}>{product.name}</Text>
+                 <Text style={{ fontSize: 20, marginTop: 3 }}>
+                   {product.price} €
+                 </Text>
+               </View>
+ {includesWithLooseEquality(favs, product) ? (
                     <IconButtonFav
                       icon={"ios-star"}
                       action={() => handleRemoveToFavs(product)}
@@ -216,22 +233,11 @@ const ProductsView = (props) => {
                       action={() => handleAddToFavs(product)}
                     />
                   )}
-                  <Button
-                    texto="Detalles"
-                    action={() => {
-                      navigation.navigate("ProductsDetail", {
-                        name: product.name,
-                        price: product.price,
-                        description: product.description,
-                      });
-                    }}
-                  />
-                </View>
-              </View>
-            </View>
-          ))}
-        </>
-      )}
+             </View>
+           </TouchableOpacity>
+         ))}
+       </>
+      ) }
     </ScrollView>
   );
 };
@@ -276,7 +282,12 @@ const styles = StyleSheet.create({
   },
   flexRow: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    gap: 50,
     flex: 1,
   },
+  image: {
+    width: 70,
+    aspectRatio: 1,
+  },
+
 });
