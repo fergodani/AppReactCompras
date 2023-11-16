@@ -167,5 +167,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginHorizontal: 10,
     marginTop: 15,
+    borderWidth: 1,
+    borderColor: "#cccccc",
   },
 });

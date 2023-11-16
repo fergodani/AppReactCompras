@@ -138,6 +138,7 @@ const FavoriteView = (props) => {
            }}
          >
            <View style={styles.flexRow}>
+            <View style={{flexDirection: "row", gap: 25}}>
              <Image
                style={styles.image}
                source={{uri: productFav.image}}
@@ -147,6 +148,7 @@ const FavoriteView = (props) => {
                <Text style={{ fontSize: 20, marginTop: 3 }}>
                  {productFav.price} €
                </Text>
+             </View>
              </View>
                <IconButtonFav
                  icon={"ios-star"}
@@ -232,6 +234,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#cccccc",
     flexDirection: "row",
+    backgroundColor: "white",
+    borderRadius: 5
   },
   columnaIzq: {
     flex: 1,
