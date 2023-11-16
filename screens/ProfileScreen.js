@@ -31,10 +31,13 @@ const ProfileScreen = () => {
     const fetchData = async () => {
       setIsLoading(true);
       const userRef = doc(collection(firestore, "users"), auth.currentUser.uid);
-      const q1 = query(collection(firestore, "users"), where("uid", "==", auth.currentUser.uid))
-      const userSnapshot = await getDocs(q1)
+      const q1 = query(
+        collection(firestore, "users"),
+        where("uid", "==", auth.currentUser.uid)
+      );
+      const userSnapshot = await getDocs(q1);
       userSnapshot.forEach((doc) => {
-        setUser(doc.data())
+        setUser(doc.data());
       });
       const q = query(ordersCollection, where("user", "==", userRef));
       const querySnapshot = await getDocs(q);
@@ -55,10 +58,13 @@ const ProfileScreen = () => {
     const fetchData = async () => {
       setIsLoading(true);
       const userRef = doc(collection(firestore, "users"), auth.currentUser.uid);
-      const q1 = query(collection(firestore, "users"), where("uid", "==", auth.currentUser.uid))
-      const userSnapshot = await getDocs(q1)
+      const q1 = query(
+        collection(firestore, "users"),
+        where("uid", "==", auth.currentUser.uid)
+      );
+      const userSnapshot = await getDocs(q1);
       userSnapshot.forEach((doc) => {
-        setUser(doc.data())
+        setUser(doc.data());
       });
       const q = query(ordersCollection, where("user", "==", userRef));
       const querySnapshot = await getDocs(q);
@@ -86,7 +92,9 @@ const ProfileScreen = () => {
     >
       {!isLoading && (
         <>
-          <Text style={{fontSize: 30, fontWeight: '600'}}>Bienvenido/a, {user.name} {user.surname}</Text>
+          <Text style={{ fontSize: 30, fontWeight: "600" }}>
+            Bienvenido/a, {user.name} {user.surname}
+          </Text>
           <Text style={styles.titulo}>Pedidos</Text>
           {orders.map((order, index) => (
             <View key={index} style={styles.card}>
@@ -100,7 +108,8 @@ const ProfileScreen = () => {
               {order.products.map((item, index) => (
                 <View key={index}>
                   <Text style={{ textAlign: "center" }}>
-                    {item.name} {item.quantity} uds {item.price * item.quantity}€
+                    {item.name} {item.quantity} uds {item.price * item.quantity}
+                    €
                   </Text>
                 </View>
               ))}
@@ -158,5 +167,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginHorizontal: 10,
     marginTop: 15,
+    borderWidth: 1,
+    borderColor: "#cccccc",
   },
 });

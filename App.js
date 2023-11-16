@@ -9,8 +9,9 @@ import { CarritoProvider } from "./context/CarritoState";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useCarrito } from "./context/CarritoState";
-import OrderDetails from "./screens/OrderDetails"
-import ProfileScreen from "./screens/ProfileScreen"
+import OrderDetails from "./screens/OrderDetails";
+import ProfileScreen from "./screens/ProfileScreen";
+import FavoriteView from "./screens/FavoriteView";
 import Toast from 'react-native-toast-message';
 import { StatusBar } from "react-native";
 
@@ -31,8 +32,11 @@ function MainTab() {
                 : 'ios-cart-outline';
             } else if (route.name === 'Catálogo') {
               iconName = focused ? 'ios-pricetag' : 'ios-pricetag-outline';
-            } else {
+            } else if (route.name === 'Perfil'){
               iconName = focused ? 'ios-person' : 'ios-person-outline';
+            }
+            else {
+              iconName = focused ? 'ios-star' : 'ios-star-outline';
             }
             return <Ionicons name={iconName} size={size} color={color} />;
           },
@@ -47,6 +51,7 @@ function MainTab() {
       >
       <Tab.Screen name="Catálogo" component={CatalogoStack} />
       <Tab.Screen name="Carrito" component={CarritoStack} options={{ tabBarBadge: state.numElements }}/>
+      <Tab.Screen name="Favoritos" component={FavoriteView}/>
       <Tab.Screen name="Perfil" component={ProfileScreen}/>
     </Tab.Navigator>
   );

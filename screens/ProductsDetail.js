@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { ScrollView, Image, View, StyleSheet, Text } from "react-native";
+import React, { useState } from "react";
+import { Image, View, StyleSheet, Text } from "react-native";
 import Button from "../components/Button";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { Dropdown } from "react-native-element-dropdown";
@@ -9,15 +9,15 @@ import { useCarrito } from "../context/CarritoState";
 const ProductsDetail = () => {
   const [quantity, setQuantity] = useState(1);
   const navigation = useRoute();
-  const { name, price, description } = navigation.params || {};
-  const { addProduct, increase } = useCarrito();
+  const { name, price, description, image } = navigation.params || {};
+  const { addProduct} = useCarrito();
   const navigation2 = useNavigation();
 
   return (
     <View style={[styles.container, styles.productItem]}>
       <Image
         style={styles.image}
-        source={require("../assets/placeholder.png")}
+        source={{ uri: image}}
       />
       <Text style={styles.title}>{name}</Text>
       <Text style={styles.description}>Precio artículo: {price} €</Text>
@@ -146,7 +146,8 @@ const styles = StyleSheet.create({
   },
   image: {
     width: 200,
-    aspectRatio: 1
+    aspectRatio: 1,
+    borderRadius: 5,
   },
 });
 
